@@ -1,4 +1,5 @@
 import pygame
+from ai import *
 
 BALL_RADIUS = 10
 BALL_COLOR = (230, 230, 240)
@@ -16,16 +17,16 @@ VELOCITY_PASS_COEF = 0.5
 class Game(object):
     def __init__(self, win_size, number_of_ai):
         self.ball = Ball(win_size)
-        self.player1 = Player(True, win_size)
-        self.player2 = Player(False, win_size)
+        self.player1 = Player(True, win_size, ai=number_of_ai > 0)
+        self.player2 = Player(False, win_size, ai=number_of_ai > 1)
         self.number_of_ai = number_of_ai
         self.win_size = win_size
         self.score = (0, 0)
         self.playing = True
 
     def step(self):
-        self.player1.step()
-        self.player2.step()
+        self.player1.step(self.ball, self.player2)
+        self.player2.step(self.ball, self.player1)
         val = self.ball.update(self.player1, self.player2)
 
         if val < 0:
@@ -152,6 +153,9 @@ class Player(object):
         self.ai = ai
         self.win_size = win_size
 
+        if self.ai:
+            self.agent = AIPlayer()
+
     def reset(self, win_size):
         self.velocity = (0, PLAYER_VELOCITY)
         self.position = (
@@ -163,19 +167,26 @@ class Player(object):
     def draw(self, window):
         pygame.draw.rect(window, PLAYER_COLOR, (self.position[0], self.position[1], PLAYER_SIZE[0], PLAYER_SIZE[1]))
 
-    def step(self):
+    def step(self, ball, enemy):
         if self.ai:
-            pass
+            action = self.agent.get_action(ball, self, enemy)
         else:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                self.move(True)
-                self.velocity = (0, -PLAYER_VELOCITY)
+                action = 0
             elif keys[pygame.K_DOWN]:
-                self.move(False)
-                self.velocity = (0, PLAYER_VELOCITY)
+                action = 1
             else:
-                self.velocity = (0, 0)
+                action = -1
+
+        if action == 0:
+            self.move(True)
+            self.velocity = (0, -PLAYER_VELOCITY)
+        elif action == 1:
+            self.move(False)
+            self.velocity = (0, PLAYER_VELOCITY)
+        else:
+            self.velocity = (0, 0)
 
         self.update()
 
