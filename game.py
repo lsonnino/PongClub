@@ -102,17 +102,25 @@ class Ball(object):
             if self.position[0] - BALL_RADIUS <= PLAYER_SIZE[0] and \
                     player.position[1] < self.position[1] < player.position[1] + PLAYER_SIZE[1]:
                 vel_x = abs(vel_x)
-                vel_x += player.velocity[1] * VELOCITY_PASS_COEF
+                # vel_y += player.velocity[1] * VELOCITY_PASS_COEF
+                if self.position[1] < player.position[1] + PLAYER_SIZE[1]/2:
+                    vel_y -= PLAYER_VELOCITY
+                else:
+                    vel_y += PLAYER_VELOCITY
         else:
             if self.position[0] + BALL_RADIUS >= self.win_size[0] - PLAYER_SIZE[0] and \
                     player.position[1] < self.position[1] < player.position[1] + PLAYER_SIZE[1]:
                 vel_x = -abs(vel_x)
-                vel_x -= player.velocity[1] * VELOCITY_PASS_COEF
+                # vel_y -= player.velocity[1] * VELOCITY_PASS_COEF
+                if self.position[1] < player.position[1] + PLAYER_SIZE[1]/2:
+                    vel_y -= PLAYER_VELOCITY
+                else:
+                    vel_y += PLAYER_VELOCITY
 
         if vel_x < 0:
-            if vel_x < -BALL_MIN_SPEED:
+            if vel_x > -BALL_MIN_SPEED:
                 vel_x = -BALL_MIN_SPEED
-            elif vel_x > -BALL_MAX_SPEED:
+            elif vel_x < -BALL_MAX_SPEED:
                 vel_x = -BALL_MAX_SPEED
         else:
             if vel_x < BALL_MIN_SPEED:
@@ -120,9 +128,9 @@ class Ball(object):
             elif vel_x > BALL_MAX_SPEED:
                 vel_x = BALL_MAX_SPEED
         if vel_y < 0:
-            if vel_y < -BALL_MIN_SPEED:
+            if vel_y > -BALL_MIN_SPEED:
                 vel_y = -BALL_MIN_SPEED
-            elif vel_y > -BALL_MAX_SPEED:
+            elif vel_y < -BALL_MAX_SPEED:
                 vel_y = -BALL_MAX_SPEED
         else:
             if vel_y < BALL_MIN_SPEED:
