@@ -115,7 +115,6 @@ class Population(object):
             winner = self.splits[i][1 if results[i] else 0]
 
             self.splits[i] = (winner.clone(), winner.clone())
-            self.splits[i][0].mutate()
             self.splits[i][1].mutate()
 
     def fetch(self):
