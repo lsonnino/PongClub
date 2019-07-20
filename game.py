@@ -101,19 +101,19 @@ class Ball(object):
 
         if player.left:
             if self.position[0] - BALL_RADIUS <= PLAYER_SIZE[0] and \
-                    player.position[1] < self.position[1] < player.position[1] + PLAYER_SIZE[1]:
+                    player.position[1] <= self.position[1] <= player.position[1] + PLAYER_SIZE[1]:
                 vel_x = abs(vel_x)
                 # vel_y += player.velocity[1] * VELOCITY_PASS_COEF
-                if self.position[1] < player.position[1] + PLAYER_SIZE[1]/2:
+                if self.position[1] <= player.position[1] + PLAYER_SIZE[1]/2:
                     vel_y -= PLAYER_VELOCITY
                 else:
                     vel_y += PLAYER_VELOCITY
         else:
             if self.position[0] + BALL_RADIUS >= self.win_size[0] - PLAYER_SIZE[0] and \
-                    player.position[1] < self.position[1] < player.position[1] + PLAYER_SIZE[1]:
+                    player.position[1] <= self.position[1] <= player.position[1] + PLAYER_SIZE[1]:
                 vel_x = -abs(vel_x)
                 # vel_y -= player.velocity[1] * VELOCITY_PASS_COEF
-                if self.position[1] < player.position[1] + PLAYER_SIZE[1]/2:
+                if self.position[1] <= player.position[1] + PLAYER_SIZE[1]/2:
                     vel_y -= PLAYER_VELOCITY
                 else:
                     vel_y += PLAYER_VELOCITY
