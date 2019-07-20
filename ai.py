@@ -17,9 +17,9 @@ class NeuralNetwork(object):
     def initialize(self):
         for x in range(OUTPUTS):
             for y in range(INPUTS):
-                self.weights[x, y] = random()
+                self.weights[x, y] = 2 * random() - 1
 
-            self.biases[x] = random()
+            self.biases[x] = 2 * random() - 1
 
     def clone(self):
         new = NeuralNetwork()
