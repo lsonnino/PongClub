@@ -5,7 +5,7 @@ import pickle
 import os
 import shutil
 
-POPULATION_SIZE = 200
+POPULATION_SIZE = 256
 DATA_DIR = "populations"
 POPULATION_EXTENSION = "pop"
 

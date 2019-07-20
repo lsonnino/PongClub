@@ -5,16 +5,16 @@ from os.path import isfile, join
 
 NAME = "PongClub"
 NUMBER_OF_AI = 2  # between 0 and 2
-NUMBER_OF_GEN = 2
+NUMBER_OF_GEN = 8
 
 
 TRAINING = 0
 PLAYING = 1
 AGAINST_BEST = 2
-action = AGAINST_BEST
+action = TRAINING
 
 if action == TRAINING:
-    train(num_of_games=NUMBER_OF_GEN, from_num=-1)
+    train(num_of_games=NUMBER_OF_GEN, from_num=8)
 elif action == PLAYING:
     gui.game(NAME, NUMBER_OF_AI)
 elif action == AGAINST_BEST:
