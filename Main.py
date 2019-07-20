@@ -3,15 +3,15 @@ from train import *
 
 NAME = "PongClub"
 NUMBER_OF_AI = 2  # between 0 and 2
-NUMBER_OF_GEN = 48
-FROM_GEN = -1
+NUMBER_OF_GEN = 16
+FROM_GEN = 48
 
 
 TRAINING = 0
 PLAYING = 1
 AGAINST_BEST = 2
 action = AGAINST_BEST
-play_against = 48
+play_against = 64
 
 if action == TRAINING:
     train(num_of_games=NUMBER_OF_GEN, from_num=FROM_GEN)
