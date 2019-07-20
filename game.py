@@ -4,7 +4,6 @@ from ai import *
 BALL_RADIUS = 10
 BALL_COLOR = (230, 230, 240)
 BALL_INITIAL_SPEED = 20
-BALL_MIN_SPEED = 10
 BALL_MAX_SPEED = 25
 
 PLAYER_SIZE = (20, 100)
@@ -118,26 +117,14 @@ class Ball(object):
                 else:
                     vel_y += PLAYER_VELOCITY
 
-        if vel_x < 0:
-            if vel_x > -BALL_MIN_SPEED:
-                vel_x = -BALL_MIN_SPEED
-            elif vel_x < -BALL_MAX_SPEED:
+        if vel_x < -BALL_MAX_SPEED:
                 vel_x = -BALL_MAX_SPEED
-        else:
-            if vel_x < BALL_MIN_SPEED:
-                vel_x = BALL_MIN_SPEED
-            elif vel_x > BALL_MAX_SPEED:
-                vel_x = BALL_MAX_SPEED
-        if vel_y < 0:
-            if vel_y > -BALL_MIN_SPEED:
-                vel_y = -BALL_MIN_SPEED
-            elif vel_y < -BALL_MAX_SPEED:
-                vel_y = -BALL_MAX_SPEED
-        else:
-            if vel_y < BALL_MIN_SPEED:
-                vel_y = BALL_MIN_SPEED
-            elif vel_y > BALL_MAX_SPEED:
-                vel_y = BALL_MAX_SPEED
+        elif vel_x > BALL_MAX_SPEED:
+            vel_x = BALL_MAX_SPEED
+        if vel_y < -BALL_MAX_SPEED:
+            vel_y = -BALL_MAX_SPEED
+        elif vel_y > BALL_MAX_SPEED:
+            vel_y = BALL_MAX_SPEED
 
         self.velocity = (vel_x, vel_y)
 

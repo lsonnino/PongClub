@@ -4,7 +4,7 @@ from random import random, randint
 INPUTS = 6
 OUTPUTS = 2
 
-MUTATION = 0.1
+MUTATION = 0.3
 
 
 class NeuralNetwork(object):
@@ -43,13 +43,25 @@ class AIPlayer(object):
         self.brain = NeuralNetwork()
 
     def mutate(self):
+        mutated = False
+
         for x in range(OUTPUTS):
             for y in range(INPUTS):
                 if random() <= MUTATION:
                     self.brain.weights[x, y] = 2 * random() - 1
+                    mutated = True
 
             if random() <= MUTATION:
                 self.brain.biases[x] = 2 * random() - 1
+                mutated = True
+
+        if not mutated:
+            mut = randint(0, OUTPUTS * INPUTS + OUTPUTS - 1)
+            if mut < OUTPUTS:
+                self.brain.biases[mut] = 2 * random() - 1
+            else:
+                mut -= OUTPUTS
+                self.brain.weights[int(mut / INPUTS), mut % INPUTS] = 2 * random() - 1
 
     def get_action(self, ball, player, enemy):
         input = np.zeros(INPUTS)
