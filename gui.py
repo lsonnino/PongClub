@@ -10,7 +10,7 @@ TEXT_COLOR = PLAYER_COLOR
 BACKGROUND_COLOR = (77, 77, 77)
 
 
-def game(name, number_of_ai):
+def game(name, number_of_ai, first_agent=None, second_agent=None):
     # Engine materials
 
     pygame.init()
@@ -24,7 +24,7 @@ def game(name, number_of_ai):
 
     # Game materials
 
-    game = Game(WIN_SIZE, number_of_ai)
+    game = Game(WIN_SIZE, number_of_ai, first_agent, second_agent)
 
     # Running the game
 

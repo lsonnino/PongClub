@@ -15,10 +15,10 @@ VELOCITY_PASS_COEF = 0.5
 
 
 class Game(object):
-    def __init__(self, win_size, number_of_ai):
+    def __init__(self, win_size, number_of_ai, first_agent=None, second_agent=None):
         self.ball = Ball(win_size)
-        self.player1 = Player(True, win_size, ai=number_of_ai > 0)
-        self.player2 = Player(False, win_size, ai=number_of_ai > 1)
+        self.player1 = Player(True, win_size, ai=number_of_ai > 0, agent=first_agent)
+        self.player2 = Player(False, win_size, ai=number_of_ai > 1, agent=second_agent)
         self.number_of_ai = number_of_ai
         self.win_size = win_size
         self.score = (0, 0)
@@ -143,7 +143,7 @@ class Ball(object):
 
 
 class Player(object):
-    def __init__(self, left, win_size, ai=False):
+    def __init__(self, left, win_size, ai=False, agent=None):
         self.velocity = (0, PLAYER_VELOCITY)
         self.position = (
             0 if left else win_size[0] - PLAYER_SIZE[0],
@@ -153,7 +153,9 @@ class Player(object):
         self.ai = ai
         self.win_size = win_size
 
-        if self.ai:
+        if self.ai and agent:
+            self.agent = agent
+        elif self.ai:
             self.agent = AIPlayer()
 
     def reset(self, win_size):

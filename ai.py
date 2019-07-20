@@ -1,5 +1,5 @@
 import numpy as np
-from random import random
+from random import random, randint
 
 INPUTS = 6
 OUTPUTS = 2
@@ -46,10 +46,10 @@ class AIPlayer(object):
         for x in range(OUTPUTS):
             for y in range(INPUTS):
                 if random() <= MUTATION:
-                    self.brain.weights[x, y] = np.random
+                    self.brain.weights[x, y] = 2 * random() - 1
 
             if random() <= MUTATION:
-                self.brain.biases[x] = np.random
+                self.brain.biases[x] = 2 * random() - 1
 
     def get_action(self, ball, player, enemy):
         input = np.zeros(INPUTS)
@@ -72,3 +72,57 @@ class AIPlayer(object):
                 val = output[o]
 
         return max
+
+    def clone(self):
+        agent = AIPlayer()
+        agent.brain = self.brain.clone()
+
+        return agent
+
+
+class Population(object):
+    def __init__(self, size):
+        self.agents = []
+        for i in range(size):
+            self.agents.append(AIPlayer())
+        self.splits = []
+        self.rest = None
+
+    def split(self):
+        remaining = []
+        for i in range(len(self.agents)):
+            remaining.append(self.agents[i].clone())
+
+        self.splits = []
+        while len(remaining) > 1:
+            first = randint(0, len(remaining) - 1)
+            second = randint(0, len(remaining) - 2)
+
+            agent_first = remaining[first].clone()
+            remaining.remove(remaining[first])
+            agent_second = remaining[second].clone()
+            remaining.remove(remaining[second])
+
+            self.splits.append((agent_first.clone(), agent_second.clone()))
+
+        if len(remaining) == 1:
+            self.rest = remaining[0]
+        else:
+            self.rest = None
+
+    def mutate(self, results):
+        for i in range(len(results)):
+            winner = self.splits[i][1 if results[i] else 0]
+
+            self.splits[i] = (winner.clone(), winner.clone())
+            self.splits[i][0].mutate()
+            self.splits[i][1].mutate()
+
+    def fetch(self):
+        self.agents = []
+        for i in range(len(self.splits)):
+            self.agents.append(self.splits[i][0])
+            self.agents.append(self.splits[i][1])
+
+        if self.rest:
+            self.agents.append(self.rest)
